@@ -37,6 +37,7 @@ pkgver() {
 }
 
 check () {
+  msg2 "Checking if you did your homework..."
   eval "$(pyenv init -)"
   PYTHON_VERSION=$(pyenv versions | grep \*.* | awk '{print $2}')
   if [[ ${PYTHON_VERSION} -ne "2.7.18" ]]
@@ -47,6 +48,7 @@ check () {
 }
 
 prepare() {
+  msg2 "Building shit and hope it will not explode in  your face..."
   cd "${srcdir}/${pkgname}/src"
   echo "export TCLLIBPATH=$TCLLIBPATH:/usr/lib/tcltk/linuxcnc" > ${pkgname}.sh
   pyenv local 2.7.18
@@ -65,12 +67,15 @@ prepare() {
 }
 
 build () {
+  eval "$(pyenv init -)"
+  msg2 "Cooompiling - Coffe time!"
   cd "${srcdir}/${pkgname}/src"
   make "${MAKEFLAGS}"
+  msg "All done..."
 }
 
 package() {
-
+  msg2 "Packing it up..."
   cd "${srcdir}/${pkgname}/src"
   mkdir -p "${pkgdir}/opt"
   mkdir -p "${pkgdir}"/usr/bin
@@ -82,5 +87,5 @@ package() {
   rm -rf ${pkgdir}/opt/linuxcnc/.git*
   cd ${pkgdir}/opt/linuxcnc
   grep -rl './scripts' -e "${srcdir}" | xargs sed -i "s|${srcdir}/${pkgname}|/opt/linuxcnc|g"
-  echo "Run with: run-lcnc"
+  msg2 "Run with: run-lcnc"
 }
