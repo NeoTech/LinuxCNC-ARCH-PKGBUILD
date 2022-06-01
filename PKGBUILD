@@ -66,7 +66,7 @@ prepare() {
 
 build () {
   cd "${srcdir}/${pkgname}/src"
-  make -j3
+  make "${MAKEFLAGS}"
 }
 
 package() {
