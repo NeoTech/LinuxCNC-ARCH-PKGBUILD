@@ -36,17 +36,6 @@ pkgver() {
   cat src/config.h | grep "#define PACKAGE_VERSION" | sed 's/"//g' | awk '{printf $3}'
 }
 
-check () {
-  msg2 "Checking if you did your homework..."
-  eval "$(pyenv init -)"
-  PYTHON_VERSION=$(pyenv versions | grep \*.* | awk '{print $2}')
-  if [[ ${PYTHON_VERSION} -ne "2.7.18" ]]
-  then
-    echo "You require to have Python 2.7.18 defined in pyenv versions to make this work."
-    exit 1
-  fi
-}
-
 prepare() {
   msg2 "Building shit and hope it will not explode in  your face..."
   cd "${srcdir}/${pkgname}/src"
@@ -70,7 +59,7 @@ build () {
   eval "$(pyenv init -)"
   msg2 "Cooompiling - Coffe time!"
   cd "${srcdir}/${pkgname}/src"
-  make "${MAKEFLAGS}"
+  make
   msg "All done..."
 }
 
